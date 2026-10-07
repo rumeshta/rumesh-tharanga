@@ -1,0 +1,86 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-apk:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Set up Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build web application
+        run: npm run build
+
+      - name: Sync Capacitor Android project
+        run: npx cap sync android
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x android/gradlew
+
+      - name: Build Android Debug APK
+        run: |
+          cd android
+          ./gradlew assembleDebug --stacktrace
+
+      - name: Prepare APK output
+        run: |
+          mkdir -p output
+          cp android/app/build/outputs/apk/debug/app-debug.apk output/rumesh-tharanga.apk
+          ls -la output/rumesh-tharanga.apk
+
+      - name: Upload APK as Workflow Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rumesh-tharanga-apk
+          path: output/rumesh-tharanga.apk
+          retention-days: 30
+
+      - name: Create or Update GitHub Release with APK
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/heads/main')
+        with:
+          tag_name: v1.0.0
+          name: "Repedero Android App v1.0.0 (rumesh-tharanga.apk)"
+          body: |
+            ## 📱 Repedero Android APK
+            
+            This release contains the standalone Android APK built for **Rumesh Tharanga**.
+            
+            ### Download
+            - **[rumesh-tharanga.apk](https://github.com/${{ github.repository }}/releases/download/v1.0.0/rumesh-tharanga.apk)**
+            
+            ### How to Install:
+            1. Download `rumesh-tharanga.apk` to your Android device.
+            2. Tap the downloaded file to install.
+            3. If prompted, enable **"Allow installation from unknown sources"** in your phone's Settings.
+            4. Open **Repedero** from your home screen!
+          files: output/rumesh-tharanga.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
