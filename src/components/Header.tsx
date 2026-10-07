@@ -9,7 +9,8 @@ import {
   ChevronDown,
   ShieldCheck,
   CheckCircle2,
-  Sparkles
+  Sparkles,
+  Smartphone
 } from 'lucide-react';
 
 export const Header: React.FC = () => {
@@ -27,7 +28,8 @@ export const Header: React.FC = () => {
     notifications,
     markNotificationAsRead,
     openListing,
-    listings
+    listings,
+    setApkModalOpen
   } = useApp();
 
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
@@ -113,6 +115,17 @@ export const Header: React.FC = () => {
               🇬🇧 EN
             </button>
           </div>
+
+          {/* APK / Android Install Button */}
+          <button
+            onClick={() => setApkModalOpen(true)}
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-bold shadow-xs hover:shadow-sm transition-all cursor-pointer"
+            title="Descarcă APK sau instalează aplicația pe Android"
+          >
+            <Smartphone className="w-3.5 h-3.5 text-emerald-100" />
+            <span className="hidden sm:inline">Android APK</span>
+            <span className="sm:hidden text-[10px]">APK</span>
+          </button>
 
           {/* Favorites Button */}
           <button

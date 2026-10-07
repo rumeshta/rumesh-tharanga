@@ -3,6 +3,10 @@ import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { exec } from 'child_process';
+import util from 'util';
+
+const execPromise = util.promisify(exec);
 
 dotenv.config();
 
@@ -82,6 +86,41 @@ Generează în format strict JSON (fără markdown) următoarele câmpuri adapta
     } catch (error) {
       console.error('Error in /api/ai/translate:', error);
       return res.status(500).json({ error: 'Translation failed' });
+    }
+  });
+
+  // Sync to GitHub repository rumeshta/rumesh-tharanga
+  app.post('/api/sync-github', async (req, res) => {
+    try {
+      const { token } = req.body;
+      if (!token || typeof token !== 'string') {
+        return res.status(400).json({ error: 'GitHub Token is required' });
+      }
+
+      const cleanToken = token.trim();
+      if (!/^[a-zA-Z0-9_\-]+$/.test(cleanToken)) {
+        return res.status(400).json({ error: 'Invalid token format' });
+      }
+
+      // Execute git push with credentials
+      const repoUrl = `https://${cleanToken}@github.com/rumeshta/rumesh-tharanga.git`;
+      const cmd = `git push "${repoUrl}" main --force`;
+      
+      const { stdout, stderr } = await execPromise(cmd, { cwd: __dirname });
+      return res.json({
+        success: true,
+        message: 'Successfully pushed to rumeshta/rumesh-tharanga on GitHub!',
+        stdout,
+        stderr
+      });
+    } catch (err: any) {
+      console.error('Error syncing to GitHub:', err);
+      const msg = err.stderr || err.message || 'Push failed. Please verify token permissions (repo scope).';
+      return res.status(500).json({
+        error: msg.includes('Authentication failed')
+          ? 'GitHub authentication failed. Check your Personal Access Token.'
+          : msg
+      });
     }
   });
 

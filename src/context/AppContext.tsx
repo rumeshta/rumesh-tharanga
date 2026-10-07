@@ -142,6 +142,8 @@ interface AppContextType {
   setOnboardingOpen: (val: boolean) => void;
   locationModalOpen: boolean;
   setLocationModalOpen: (val: boolean) => void;
+  apkModalOpen: boolean;
+  setApkModalOpen: (val: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -715,6 +717,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   const [locationModalOpen, setLocationModalOpen] = useState<boolean>(false);
+  const [apkModalOpen, setApkModalOpen] = useState<boolean>(false);
 
   return (
     <AppContext.Provider
@@ -792,7 +795,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         onboardingOpen,
         setOnboardingOpen,
         locationModalOpen,
-        setLocationModalOpen
+        setLocationModalOpen,
+        apkModalOpen,
+        setApkModalOpen
       }}
     >
       {children}

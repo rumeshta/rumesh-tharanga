@@ -21,9 +21,10 @@ import { OnboardingModal } from './components/OnboardingModal';
 import { AuthModal } from './components/AuthModal';
 import { ShareModal } from './components/ShareModal';
 import { ReportModal } from './components/ReportModal';
+import { ApkModal } from './components/ApkModal';
 
 const AppContent: React.FC = () => {
-  const { currentView } = useApp();
+  const { currentView, apkModalOpen, setApkModalOpen } = useApp();
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 selection:bg-blue-600 selection:text-white">
@@ -57,6 +58,7 @@ const AppContent: React.FC = () => {
       <AuthModal />
       <ShareModal />
       <ReportModal />
+      <ApkModal isOpen={apkModalOpen} onClose={() => setApkModalOpen(false)} />
     </div>
   );
 };

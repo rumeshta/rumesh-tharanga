@@ -16,7 +16,8 @@ import {
   Lock,
   Building,
   UserCheck,
-  CreditCard
+  CreditCard,
+  Smartphone
 } from 'lucide-react';
 
 export const AccountScreen: React.FC = () => {
@@ -29,7 +30,8 @@ export const AccountScreen: React.FC = () => {
     openSellerShop,
     t,
     language,
-    setLanguage
+    setLanguage,
+    setApkModalOpen
   } = useApp();
 
   if (!currentUser) {
@@ -110,6 +112,13 @@ export const AccountScreen: React.FC = () => {
         switchUserRole('admin');
         setCurrentView('admin_panel');
       }
+    },
+    {
+      id: 'android_apk',
+      label: language === 'ro' ? 'Aplicație Android & APK' : 'Android App & APK Build',
+      icon: Smartphone,
+      badge: 'rumesh-tharanga.apk',
+      onClick: () => setApkModalOpen(true)
     },
     {
       id: 'settings',

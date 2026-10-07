@@ -12,7 +12,8 @@ import {
   HelpCircle,
   FileText,
   Trash2,
-  Check
+  Check,
+  Smartphone
 } from 'lucide-react';
 
 export const SettingsScreen: React.FC = () => {
@@ -24,7 +25,8 @@ export const SettingsScreen: React.FC = () => {
     currentLocation,
     setLocationModalOpen,
     dataSavingMode,
-    setDataSavingMode
+    setDataSavingMode,
+    setApkModalOpen
   } = useApp();
 
   const [infoModalText, setInfoModalText] = React.useState<string | null>(null);
@@ -131,6 +133,31 @@ export const SettingsScreen: React.FC = () => {
             />
             <div className="w-11 h-6 bg-slate-200 peer-focus:outline-hidden rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
           </label>
+        </div>
+
+        {/* Android App & APK Build Section */}
+        <div className="pt-3 border-t border-slate-100">
+          <button
+            onClick={() => setApkModalOpen(true)}
+            className="w-full flex items-center justify-between p-3 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 hover:from-emerald-100 hover:to-teal-100 border border-emerald-200/80 text-left transition-colors cursor-pointer group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+                <Smartphone className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-900 group-hover:text-emerald-700">
+                  {language === 'ro' ? 'Aplicație Android & Fișier APK' : 'Android App & APK File'}
+                </p>
+                <p className="text-[11px] text-slate-500">
+                  rumesh-tharanga.apk • GitHub Actions & PWA
+                </p>
+              </div>
+            </div>
+            <span className="text-xs font-bold text-emerald-700 group-hover:translate-x-0.5 transition-transform">
+              Deschide →
+            </span>
+          </button>
         </div>
 
         {/* Terms & Legal */}
