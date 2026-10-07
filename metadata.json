@@ -1,0 +1,6 @@
+{
+  "name": "Repedero - Anunțuri Gratuite România",
+  "description": "Repedero - Cumpără. Vinde. Descoperă. Piața ta online din România pentru mașini, imobiliare, telefoane, electronice, joburi și servicii.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
