@@ -89,6 +89,12 @@ Generează în format strict JSON (fără markdown) următoarele câmpuri adapta
     }
   });
 
+  // Download Android Project ZIP
+  app.get('/api/download-android-zip', (req, res) => {
+    const zipPath = path.resolve(__dirname, 'dist', 'rumesh-tharanga-android.zip');
+    res.download(zipPath, 'rumesh-tharanga-android.zip');
+  });
+
   // Sync to GitHub repository rumeshta/rumesh-tharanga
   app.post('/api/sync-github', async (req, res) => {
     try {
